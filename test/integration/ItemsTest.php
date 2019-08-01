@@ -22,6 +22,7 @@
 namespace oat\taoItems\test\integration;
 
 use oat\generis\test\GenerisTestCase;
+use oat\tao\model\OntologyClassService;
 use oat\tao\model\TaoOntology;
 use oat\generis\model\OntologyRdfs;
 use oat\tao\test\TaoPhpUnitTestRunner;
@@ -51,7 +52,7 @@ class ItemsTest extends GenerisTestCase
     /**
      * tests initialization
      */
-    public function setUp()
+    public function setUp(): void
     {
         TaoPhpUnitTestRunner::initTest();
         \common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
@@ -69,7 +70,7 @@ class ItemsTest extends GenerisTestCase
      */
     public function testService()
     {
-        $this->assertInstanceOf(\tao_models_classes_Service::class, $this->itemsService);
+        $this->assertInstanceOf(OntologyClassService::class, $this->itemsService);
         $this->assertInstanceOf(taoItems_models_classes_ItemsService::class, $this->itemsService);
     }
 
@@ -181,17 +182,9 @@ class ItemsTest extends GenerisTestCase
     public function testIsItemClass()
     {
         $clazz = $this->prophesize('core_kernel_classes_Class');
-        $clazz->getUri()->willReturn(TaoOntology::ITEM_CLASS_URI);
-        $this->assertTrue($this->itemsService->isItemClass($clazz->reveal()));
-
-
-        $clazz = $this->prophesize('core_kernel_classes_Class');
-        $clazz->getUri()->willReturn('uri');
-
-        $parent = $this->prophesize('core_kernel_classes_Class');
-        $parent->getUri()->willReturn(TaoOntology::ITEM_CLASS_URI);
-
-        $clazz->getParentClasses(true)->willReturn(array($parent->reveal()));
+        $clazz->equals($this->itemsService->getRootClass())->will(function ($resource) {
+            return TaoOntology::ITEM_CLASS_URI == $resource[0]->getUri();
+        });
         $this->assertTrue($this->itemsService->isItemClass($clazz->reveal()));
     }
 

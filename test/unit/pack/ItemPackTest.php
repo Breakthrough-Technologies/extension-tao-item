@@ -19,6 +19,7 @@
  */
 namespace oat\taoItems\test\unit\pack;
 
+use http\Exception\InvalidArgumentException;
 use oat\generis\test\TestCase;
 use oat\taoItems\model\pack\ItemPack;
 
@@ -71,34 +72,34 @@ class ItemPackTest extends TestCase
 
     /**
      * Test the constructor with an empty type
-     * @expectedException InvalidArgumentException
      */
     public function testWrongTypeConstructor(){
+        $this->expectException(\InvalidArgumentException::class);
         new ItemPack(null, array());
     }
 
     /**
      * Test the constructor with invalid data
-     * @expectedException InvalidArgumentException
      */
     public function testWrongDataConstructor(){
+        $this->expectException(\InvalidArgumentException::class);
         new ItemPack('qti', '{"foo":"bar"}');
     }
 
     /**
      * Test assigning unallowed assets
-     * @expectedException InvalidArgumentException
      */
     public function testWrongAssetType(){
+        $this->expectException(\InvalidArgumentException::class);
         $pack = new ItemPack('qti', array('foo' => 'bar'));
         $pack->setAssets('coffescript', array('jquery.coffee'), null, '');
     }
 
     /**
      * Test set wrong assets type
-     * @expectedException InvalidArgumentException
      */
     public function testWrongAssets(){
+        $this->expectException(\InvalidArgumentException::class);
         $pack = new ItemPack('qti', array('foo' => 'bar'));
         $pack->setAssets('js', 'jquery.js', null, '');
     }

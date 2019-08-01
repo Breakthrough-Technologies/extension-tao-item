@@ -24,6 +24,7 @@ use oat\oatbox\filesystem\File;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\pack\encoders\Base64fileEncoder;
+use oat\taoItems\model\pack\ExceptionMissingAsset;
 use oat\taoMediaManager\model\MediaSource;
 use Psr\Http\Message\StreamInterface;
 
@@ -100,11 +101,10 @@ class Base64fileEncoderTest extends TestCase
     }
 
     /**
-     * @expectedException \oat\taoItems\model\pack\ExceptionMissingAsset
      */
     public function testEncodeException()
     {
-
+        $this->expectException(ExceptionMissingAsset::class);
         $directoryStorage = $this->getMockBuilder(\tao_models_classes_service_StorageDirectory::class)
             ->disableOriginalConstructor()
             ->getMock();
