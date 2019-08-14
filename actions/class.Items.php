@@ -174,7 +174,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         unset($properties[taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT]);
                         unset($properties['warning']);
                         unset($properties['itemModelLabel']);
-    
+                        unset($properties['token']); // BT: We need to also unset the "token" property
+
                         //bind item properties and set default content:
                         $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
                         $item = $binder->bind($properties);
